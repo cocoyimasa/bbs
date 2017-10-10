@@ -31,10 +31,11 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 //app.use(multer()); // for parsing multipart/form-data
 
 var appData = require('../data.json')
+var commentData = require('../all_comments.json')
 var tags = appData.tags
 var discussion = appData.discussionList
 var articles = appData.articles // remember to add 'comment' attribute
-
+var allComments = commentData.all_comments
 var storage = {}
 
 var apiRoutes = express.Router()
@@ -169,6 +170,15 @@ apiRoutes.get('/source_code',function (req,resp) {
         }
     })
 
+})
+
+apiRoutes.get('/comments/:id',function (req,resp) {
+    var params = req.url.split('/')
+    var pageNum = parseInt(params[params.length-1])
+    resp.json({
+        errno:0,
+        data:allComments[pageNum]
+    })
 })
 
 app.use('/api',apiRoutes)

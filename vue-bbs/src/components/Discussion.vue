@@ -7,6 +7,7 @@
             <button type="button" class="btn-refresh"><i class="fa fa-refresh" aria-hidden="true"></i></button>
         </div>
         <router-view></router-view>
+        <canvas style="display:none"></canvas>
         <div class="discussion-list">
             <ul>
                 <li>
@@ -54,7 +55,7 @@
                 </li>
                 <li v-for="(disc,idx) in dList">
                     <div class="author-avatar">
-                        <img src="../assets/logo.png" alt="">
+                        <img :src="disc.author_name | sysImg" alt="">
                     </div>
                     <router-link :to="'/article/'+idx">
                         <div class="article-title">
@@ -91,7 +92,7 @@
         </div>
         <div class="article-editor" v-show="editorShow" :class="{ 'mini-article-editor' : miniEditorShow }">
             <div class="e-avatar">
-                <img src="../assets/logo.png" alt="">
+                <img v-bind:src="username | sysImg" alt="">
                 <div class="e-username">{{username}}</div>
             </div>
             <div class="e-editor">
@@ -115,6 +116,7 @@
 
 <script type="text/javascript">
     import EventBus from '../bus/event_bus.js'
+    import {textToImg} from '../utils/utils.js'
     export default{
         name: 'discussion',
         created(){
@@ -129,7 +131,13 @@
                 }
             }.bind(this))
         },
-
+        filters: {
+            sysImg: function (v) {
+                if(!v) return ''
+                var img = textToImg(v)
+                return img
+            }
+        },
         data(){
             return {
                 selects: ["最近", "最热门", "最新", "最早"],
@@ -495,6 +503,7 @@
         float:left;
         width:35px;
         height:25px;
+        font-size: 13px;
         line-height: 25px;
         margin-right:2px;
         border:1px solid #ccc;

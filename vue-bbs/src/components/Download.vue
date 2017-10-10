@@ -2,7 +2,7 @@
     <div class="download">
         <button type="button" @click="downloadSource" class="btn-download" >
             <!--<a href="/api/source_code" download="">下载源码</a>-->
-            <a href="https://github.com/cocoyimasa/js-js/archive/v1.0.0.zip" download="">下载源码</a>
+            <a href="https://github.com/cocoyimasa/bbs/archive/v1.0.0.zip" download="">下载源码</a>
         </button>
 
         <div class="code-version">

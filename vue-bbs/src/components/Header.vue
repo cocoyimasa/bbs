@@ -1,5 +1,5 @@
 <template>
-    <header class="head" :class="{ 'scroll-head': isScroll }">
+    <header class="head" :class="{ 'scroll-head' : isScroll }">
         <div class="wrapper">
             <ul class="left-ul">
                 <li id="title"><router-link to="/">QBBS-轻论坛</router-link></li>
@@ -7,6 +7,7 @@
                 <li><router-link to="/doc">文档</router-link></li>
                 <li><router-link to="/download">下载</router-link></li>
             </ul>
+            <!--<canvas style="display:none"></canvas>-->
             <ul class="right-ul">
                 <li>
                     <div class="searchbar">
@@ -16,7 +17,9 @@
                 </li>
                 <li @click="changeLanguage"><a href="javascript:void 0;">英语</a></li>
                 <li @click="signupAction" :class="{ 's-username-avatar' : avatarShow }">
-                    <a href="javascript:void 0;"><img class="user-avatar" src="../assets/logo.png" v-show="avatarShow">
+                    <a href="javascript:void 0;">
+                        <!--在使用:src时出现错误，难道因为前边的:class引起的？-->
+                        <img v-bind:src="signupOrUsername | sysImg" class="user-avatar" v-show="avatarShow">
                         {{signupOrUsername}}
                     </a>
                 </li>
@@ -73,6 +76,7 @@
 <script type="text/javascript">
     import Signup from '@/components/Signup.vue'
     import {hex_md5} from '../utils/md5.js'
+    import {textToImg} from '../utils/utils.js'
     export default {
         name: 'head',
         mounted(){
@@ -86,6 +90,13 @@
                     _this.isScroll = false
                 }
             },false)
+        },
+        filters: {
+            sysImg: function (v) {
+                if(!v) return ''
+                var img = textToImg(v)
+                return img
+            }
         },
         data () {
             return {
@@ -102,9 +113,6 @@
                 loginEmail:'',
                 loginPassword:'',
             }
-        },
-        computed:{
-
         },
         methods:{
             resetLoginAndSignup(){
@@ -202,6 +210,7 @@
         top:0;
         left:0;
         background-color: #fff;
+        z-index:100;
     }
     .scroll-head{
         box-shadow: 0px 1px 6px 3px #999;
@@ -279,8 +288,9 @@
         background-color: #ccc;
     }
     .user-avatar{
-        width:14px;
-        height:14px;
+        width:19px;
+        height:19px;
+        vertical-align: middle;
     }
     .hide{
         display:none;
